@@ -3,50 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Games - ModXnet</title>
+    <title>Premium Mobile Games Collection - ModXnet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #00ffcc;
             --secondary: #00ccff;
             --dark: #121212;
             --light: #1e1e1e;
+            --lighter: #2a2a2a;
             --white: #ffffff;
             --border-radius: 12px;
+            --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
         body {
             background: var(--dark);
             color: white;
             padding: 20px;
+            line-height: 1.6;
         }
         
         .header {
             text-align: center;
             margin-bottom: 30px;
+            padding: 20px 0;
         }
         
         .logo {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: bold;
             background: linear-gradient(to right, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+        
+        .tagline {
+            color: rgba(255,255,255,0.7);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
         }
         
         .all-games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1300px;
             margin: 0 auto;
         }
         
@@ -54,79 +66,228 @@
             background: var(--light);
             border-radius: var(--border-radius);
             overflow: hidden;
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
             border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
         }
         
         .game-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--box-shadow);
         }
         
         .game-img {
             width: 100%;
-            height: 150px;
+            height: 160px;
             object-fit: cover;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         
         .game-info {
-            padding: 15px;
+            padding: 18px;
         }
         
         .game-title {
             font-weight: 600;
-            margin-bottom: 10px;
-            font-size: 1rem;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .game-platforms {
+            display: flex;
+            gap: 6px;
+            margin-left: 8px;
+        }
+        
+        .platform-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+        
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .game-rating {
+            color: #ffc107;
+            display: flex;
+            align-items: center;
+        }
+        
+        .game-size {
+            background: rgba(255,255,255,0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
         }
         
         .download-btn {
             display: block;
             text-align: center;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: var(--dark);
-            padding: 10px;
-            border-radius: 6px;
+            padding: 12px;
+            border-radius: var(--border-radius);
             text-decoration: none;
             font-weight: 600;
-            transition: background 0.3s;
+            transition: all 0.3s;
             cursor: pointer;
             border: none;
             width: 100%;
+            font-size: 0.95rem;
         }
         
         .download-btn:hover {
-            background: #00e6b8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 204, 0.3);
+        }
+        
+        .download-btn i {
+            margin-left: 5px;
+        }
+        
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4757;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
         }
         
         @media (max-width: 768px) {
             .all-games-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 15px;
             }
+            
+            .game-img {
+                height: 140px;
+            }
+            
+            .header {
+                margin-bottom: 20px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Loading overlay for ad */
+        .ad-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .ad-message {
+            color: white;
+            margin-top: 20px;
+            text-align: center;
+            max-width: 300px;
         }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="logo">ModXnet</div>
+        <p class="tagline">Premium Mobile Games Collection</p>
         <h1>All Games Collection</h1>
     </div>
     
     <div class="all-games-grid">
         <!-- Need For Speed Mobile -->
         <div class="game-card">
+            <span class="badge">Hot</span>
             <img src="https://i.ibb.co/wZbqZrWm/Fiyk-DJVdy-9ytqfua-DCBB1-Mm-HNTH.jpg" alt="Need For Speed Mobile" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">Need For Speed Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    Need For Speed Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                        <img src="https://img.icons8.com/color/48/000000/ios.png" alt="iOS" class="platform-icon" title="iOS">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        4.7
+                    </span>
+                    <span class="game-size">1.2 GB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('Need For Speed Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
         <!-- Call of duty Mobile -->
         <div class="game-card">
+            <span class="badge">Popular</span>
             <img src="https://i.ibb.co/4gmNk2V3/unnamed.jpg" alt="Call of duty Mobile" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">Call of duty Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    Call of Duty Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                        <img src="https://img.icons8.com/color/48/000000/ios.png" alt="iOS" class="platform-icon" title="iOS">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        4.9
+                    </span>
+                    <span class="game-size">2.4 GB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('Call of Duty Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
@@ -134,17 +295,55 @@
         <div class="game-card">
             <img src="https://i.ibb.co/WhRrL4q/e4332432c1be791e1c1d624ebe544f76e2b1bb23b7211424.jpg" alt="REMATCH Mobile" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">REMATCH Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    REMATCH Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        4.2
+                    </span>
+                    <span class="game-size">850 MB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('REMATCH Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
         <!-- League of Legends Mobile -->
         <div class="game-card">
+            <span class="badge">New</span>
             <img src="https://i.ibb.co/R976Nd2/lol.jpg" alt="League of Legends" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">League of Legends Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    League of Legends Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                        <img src="https://img.icons8.com/color/48/000000/ios.png" alt="iOS" class="platform-icon" title="iOS">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        5.0
+                    </span>
+                    <span class="game-size">3.1 GB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('League of Legends Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
@@ -152,17 +351,55 @@
         <div class="game-card">
             <img src="https://i.ibb.co/HDnzRsJ/gow.jpg" alt="God of War" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">God of War Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    God of War Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        4.6
+                    </span>
+                    <span class="game-size">2.8 GB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('God of War Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
         <!-- Spider-Man 2 Mobile -->
         <div class="game-card">
+            <span class="badge">New</span>
             <img src="https://i.ibb.co/McjvCfj/spiderman2.png" alt="Spider-Man 2" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">Spider-Man 2 Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    Spider-Man 2 Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                        <img src="https://img.icons8.com/color/48/000000/ios.png" alt="iOS" class="platform-icon" title="iOS">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        4.0
+                    </span>
+                    <span class="game-size">1.5 GB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('Spider-Man 2 Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
@@ -170,17 +407,54 @@
         <div class="game-card">
             <img src="https://i.ibb.co/VWmMFDvW/wolvrine.jpg" alt="Wolvrine Mobile" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">Wolvrine Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    Wolverine Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        3.7
+                    </span>
+                    <span class="game-size">1.1 GB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('Wolverine Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
         <!-- The Last of Us Mobile -->
         <div class="game-card">
+            <span class="badge">Popular</span>
             <img src="https://i.ibb.co/tLx5P3D/tlou-1.jpg" alt="The Last of Us" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">The Last of Us Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    The Last of Us Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        4.6
+                    </span>
+                    <span class="game-size">2.3 GB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('The Last of Us Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
@@ -188,26 +462,83 @@
         <div class="game-card">
             <img src="https://i.ibb.co/n0tBVMs/horizon.jpg" alt="Horizon Zero Dawn" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">Horizon Zero Dawn Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    Horizon Zero Dawn Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        4.0
+                    </span>
+                    <span class="game-size">1.9 GB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('Horizon Zero Dawn Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
         <!-- Red Dead Redemption 2 Mobile -->
         <div class="game-card">
+            <span class="badge">Premium</span>
             <img src="https://i.ibb.co/kDmVtwv/rdr2-1.jpg" alt="Red Dead Redemption 2" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">Red Dead Redemption 2 Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    Red Dead Redemption 2 Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        5.0
+                    </span>
+                    <span class="game-size">3.5 GB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('Red Dead Redemption 2 Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
         <!-- Fortnite Mobile -->
         <div class="game-card">
+            <span class="badge">Popular</span>
             <img src="https://i.ibb.co/W5j9ZXx/fortnite.jpg" alt="Fortnite" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">Fortnite Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    Fortnite Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                        <img src="https://img.icons8.com/color/48/000000/ios.png" alt="iOS" class="platform-icon" title="iOS">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        4.7
+                    </span>
+                    <span class="game-size">2.7 GB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('Fortnite Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
@@ -215,17 +546,55 @@
         <div class="game-card">
             <img src="https://i.ibb.co/0jfpcKqv/Assassin-s-Creed-III-Game-Cover.jpg" alt="Assassin's Creed Mobile" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">Assassin's Creed Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    Assassin's Creed Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        4.1
+                    </span>
+                    <span class="game-size">1.8 GB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('Assassin\'s Creed Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
         <!-- Roblox Mod -->
         <div class="game-card">
+            <span class="badge">Mod</span>
             <img src="https://i.ibb.co/k92hJwF/roblox.png" alt="Roblox" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">Roblox Mod</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    Roblox Mod
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                        <img src="https://img.icons8.com/color/48/000000/ios.png" alt="iOS" class="platform-icon" title="iOS">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        4.5
+                    </span>
+                    <span class="game-size">120 MB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('Roblox Mod')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
         
@@ -233,15 +602,74 @@
         <div class="game-card">
             <img src="https://i.ibb.co/Mcfhc3g/gta4-1.jpg" alt="GTA 4 Mobile" class="game-img">
             <div class="game-info">
-                <h3 class="game-title">GTA 4 Mobile</h3>
-                <button class="download-btn" onclick="showAd()">Download</button>
+                <h3 class="game-title">
+                    GTA 4 Mobile
+                    <span class="game-platforms">
+                        <img src="https://img.icons8.com/color/48/000000/android-os.png" alt="Android" class="platform-icon" title="Android">
+                    </span>
+                </h3>
+                <div class="game-meta">
+                    <span class="game-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        4.9
+                    </span>
+                    <span class="game-size">2.6 GB</span>
+                </div>
+                <button class="download-btn" onclick="showAd('GTA 4 Mobile')">
+                    Download <i class="fas fa-download"></i>
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- Ad Loading Overlay -->
+    <div class="ad-overlay" id="adOverlay">
+        <div class="spinner"></div>
+        <div class="ad-message">
+            Preparing your download...<br>
+            Please wait while we verify your request
+        </div>
+    </div>
+
     <script>
-        function showAd() {
-            // AdBlue Media script
+        // AdBlue Media configuration
+        var llUcb_QHa_AvYRfc = {"it":4458399,"key":"eee25"};
+        
+        function showAd(gameName) {
+            // Show loading overlay
+            const overlay = document.getElementById('adOverlay');
+            overlay.style.display = 'flex';
+            
+            // Log which game is being downloaded
+            console.log(`Preparing download for: ${gameName}`);
+            
+            // Load AdBlue Media script
+            const script = document.createElement('script');
+            script.src = 'https://dfmpe7igjx4jo.cloudfront.net/8086c3b.js';
+            script.onload = function() {
+                _gu(); // Initial ad call
+                
+                // Set timeout for second ad call
+                setTimeout(function() {
+                    _gu();
+                    
+                    // After ads, redirect to download
+                    setTimeout(function() {
+                        overlay.style.display = 'none';
+                        window.location.href = "https://modxnet.github.io/All-Games/";
+                    }, 2000);
+                }, 5000);
+            };
+            
+            document.head.appendChild(script);
+        }
+        
+        // Alternative ad provider if needed
+        function loadAlternativeAd() {
             var s = document.createElement('script');
             s.src='//coohauwhob.net/45f/92d56/mw.min.js?z=7738586&sw=/sw-check-permissions-9cb4b.js';
             s.onload = function(result) {
@@ -251,8 +679,8 @@
                     case 'onPermissionDenied':
                     case 'onAlreadySubscribed':
                     case 'onNotificationUnsupported':
-                        // After ad interaction, redirect to actual download
                         setTimeout(function() {
+                            document.getElementById('adOverlay').style.display = 'none';
                             window.location.href = "https://modxnet.github.io/All-Games/";
                         }, 2000);
                         break;
